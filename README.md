@@ -1,4 +1,6 @@
-# path_finding_visualisation
+# Path finding visualisation (DFS and BFS) in Javascript
+
+https://martin-karsten.github.io/graph_traverse_visualisation
 
 ## Project setup
 ```
@@ -14,16 +16,3 @@ yarn run serve
 ```
 yarn run build
 ```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

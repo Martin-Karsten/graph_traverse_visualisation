@@ -7,9 +7,9 @@
     </div>
 
     <div class="buttons">
-      <button class="button" @click="dfs">Travel bfs</button>
-      <button class="button" @click="bfs">Travel BFS</button>
+      <button class="button" @click="dfs">Travel DFS</button>
       <button class="button" @click="travel">Travel</button>
+      <button class="button" @click="bfs">Travel BFS</button>
     </div>
 
     <div class="current">
