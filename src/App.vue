@@ -1,13 +1,20 @@
 <template>
   <div id="app">
+    <h1>Visualisation of Depth First and Breadth First search</h1>
     <div class="trees">
       <v-chart :options="options"></v-chart>
       <v-chart :options="options2"></v-chart>
     </div>
-    <h1>{{current.name}}</h1>
-    <div class="button">
-      <button class="button" @click="dfs">Forward</button>
-      <button class="button" @click="backwards">Backwards</button>
+
+    <div class="buttons">
+      <button class="button" @click="dfs">Travel bfs</button>
+      <button class="button" @click="bfs">Travel BFS</button>
+      <button class="button" @click="travel">Travel</button>
+    </div>
+
+    <div class="current">
+      <h1 class="num">{{current.name}}</h1>
+      <h1 class="num">{{currentBFS.name}}</h1>
     </div>
   </div>
 </template>
@@ -34,6 +41,14 @@ export default {
       count2: 0, 
       reset: false,
       reset2: false,
+
+      currentBFS: '',
+      nodesBFS: [],
+      prevBFS: '',
+      countBFS: 0,
+      count2BFS: 0, 
+      resetBFS: false,
+      reset2BFS: false,
       options: {
         label: {
           trigger: 'item',
@@ -108,9 +123,14 @@ export default {
   },
   mounted(){
     this.init()
-    this.nodes = this.options2.series[0].data[0].children
+    this.nodes = this.options.series[0].data[0].children
     this.current = this.options.series[0].data[0]
     this.prev = this.options.series[0].data[0]
+
+    this.initBFS()
+    this.nodesBFS = this.options2.series[0].data[0].children
+    this.currentBFS = this.options2.series[0].data[0]
+    this.prevBFS = this.options2.series[0].data[0]
   },
   methods:{
     init(){
@@ -241,10 +261,147 @@ export default {
           children: []
         })
       }
-      this.options.series[0].data.push(data)
-      this.options2.series[0].data.push(data)
+      this.options.series[0].data = [...this.options.series[0].data, data]
     },
-    forward(){
+
+    initBFS(){
+    let data = 
+      {
+        name: "Start",
+        label: {          
+        },
+          itemStyle: {
+            color: 'green',
+            borderColor: 'green'
+          },
+        children: 
+        [
+          {
+            name: Math.floor((Math.random() * 20) + 1),  
+            value: Math.floor((Math.random() * 20) + 1),    
+            label: {
+              fontSize: 20
+            },
+            itemStyle: {
+              color: '#f54542',
+              borderColor: '#f54542'
+            },
+            children: [
+              {
+                name: Math.floor((Math.random() * 20) + 1),  
+                value: Math.floor((Math.random() * 20) + 1),    
+                label: {
+                  fontSize: 20
+                },
+                itemStyle: {
+                  color: '#f54542',
+                  borderColor: '#f54542'
+                },
+                children: []
+              },
+            ]
+          },
+          {
+            name: Math.floor((Math.random() * 20) + 1),  
+            value: Math.floor((Math.random() * 20) + 1),    
+            label: {
+              fontSize: 20
+            },
+            itemStyle: {
+              color: '#f54542',
+              borderColor: '#f54542'
+            },
+            children: [
+              {
+                name: Math.floor((Math.random() * 20) + 1),  
+                value: Math.floor((Math.random() * 20) + 1),    
+                label: {
+                  fontSize: 20
+                },
+                itemStyle: {
+                  color: '#f54542',
+                  borderColor: '#f54542'
+                },
+                children: []
+              },
+            ]
+          },
+          {
+            name: Math.floor((Math.random() * 20) + 1),  
+            value: Math.floor((Math.random() * 20) + 1),    
+            label: {
+              fontSize: 20
+            },
+            itemStyle: {
+              color: '#f54542',
+              borderColor: '#f54542'
+            },
+            children: [
+              {
+                name: Math.floor((Math.random() * 20) + 1),  
+                value: Math.floor((Math.random() * 20) + 1),    
+                label: {
+                  fontSize: 20
+                },
+                itemStyle: {
+                  color: '#f54542',
+                  borderColor: '#f54542'
+                },
+                children: []
+              },
+            ]
+          },
+          {
+            name: Math.floor((Math.random() * 20) + 1),  
+            value: Math.floor((Math.random() * 20) + 1),    
+            label: {
+              fontSize: 20
+            },
+            itemStyle: {
+              color: '#f54542',
+              borderColor: '#f54542'
+            },
+            children: [
+              {
+                name: Math.floor((Math.random() * 20) + 1),  
+                value: Math.floor((Math.random() * 20) + 1),    
+                label: {
+                  fontSize: 20
+                },
+                itemStyle: {
+                  color: '#f54542',
+                  borderColor: '#f54542'
+                },
+                children: []
+              },
+            ]
+          },
+        ]
+      };
+      for(let i=0; i<4; i++){
+        data.children[i].children.push({
+          name: Math.floor((Math.random() * 20) + 1),  
+          value: Math.floor((Math.random() * 20) + 1),    
+          label: {
+            fontSize: 20
+          },
+          itemStyle: {
+            color: '#f54542',
+            borderColor: '#f54542'
+          },
+          children: []
+        })
+      }
+
+      this.options2.series[0].data = [...this.options2.series[0].data, data]
+    },
+
+    travel(){
+      this.dfs()
+      this.bfs()
+    },
+
+    dfs(){
       if(this.current.children.length > 0){
         this.prev = {...this.current}
         this.current = {...this.current.children[this.count]}
@@ -267,36 +424,35 @@ export default {
         this.current.itemStyle.color = 'green'
       }
     },
-    backwards(){
-      this.current = {...this.prev}
-    },
-    dfs(){
-      if(this.nodes[this.count] != undefined && !this.reset){
-        this.nodes[this.count].itemStyle.color = 'green'
-        this.nodes[this.count].itemStyle.borderColor = 'green'
-        this.count++
+    bfs(){
+      if(this.nodesBFS[this.countBFS] != undefined && !this.resetBFS){
+        this.nodesBFS[this.countBFS].itemStyle.color = 'green'
+        this.nodesBFS[this.countBFS].itemStyle.borderColor = 'green'
+        this.currentBFS = this.nodesBFS[this.countBFS]
+        this.countBFS++
       }
       else{
-        if(!this.reset){
-          this.count = 0
-          this.reset = true
+        if(!this.resetBFS){
+          this.countBFS = 0
+          this.resetBFS = true
         }
-        if(this.nodes[this.count].children != undefined){
-          if(this.nodes[this.count].children[this.count2] != undefined){
-            this.nodes[this.count].children[this.count2].itemStyle.color = 'green'
-            this.nodes[this.count].children[this.count2].itemStyle.borderColor = 'green'
-            console.log({...this.nodes[this.count].children[this.count2]})
-            this.count2++
+        if(this.nodesBFS[this.countBFS].children != undefined){
+          if(this.nodesBFS[this.countBFS].children[this.count2BFS] != undefined){
+            this.nodesBFS[this.countBFS].children[this.count2BFS].itemStyle.color = 'green'
+            this.nodesBFS[this.countBFS].children[this.count2BFS].itemStyle.borderColor = 'green'
+            this.currentBFS = this.nodesBFS[this.countBFS].children[this.count2BFS]
+            this.count2BFS++
           }
-        else if(this.nodes[this.count+1].children[0] != undefined){
-            this.count++
-            if(!this.reset2){
-              this.count2 = 0
-              this.reset2 = false
+        else if(this.nodesBFS[this.countBFS+1].children[0] != undefined){
+            this.countBFS++
+            if(!this.reset2BFS){
+              this.count2BFS = 0
+              this.reset2BFS = false
             }
-            this.nodes[this.count].children[this.count2].itemStyle.color = 'green'
-            this.nodes[this.count].children[this.count2].itemStyle.borderColor = 'green'
-            this.count2++
+            this.nodesBFS[this.countBFS].children[this.count2BFS].itemStyle.color = 'green'
+            this.nodesBFS[this.countBFS].children[this.count2BFS].itemStyle.borderColor = 'green'
+            this.currentBFS = this.nodesBFS[this.countBFS].children[this.count2BFS]
+            this.count2BFS++
           }
         }
       }
@@ -312,10 +468,33 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+
+  display: table;
+  margin: 0 auto;
 }
 
 div.trees{
+  margin-top: 120px;
   display: flex;
+}
+
+div.buttons{
+  margin: 2rem;
+}
+
+div.current{
+  display: flex;
+  margin: 2rem;
+}
+
+button.button{
+  margin-left: 10rem;
+  margin-right: 10rem;
+}
+
+.num{
+  width: 80px;
+  margin-left: 18rem;
+  margin-right: 8rem;
 }
 </style>
